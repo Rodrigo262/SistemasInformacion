@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+		<!-- PARTE 1: SECCIÓN CON LAS VISTAS -->
+
+		<record model="ir.ui.view" id="view_sie_inscripcion_form">
+			<field name="name">Formulario de inscripcion</field>
+			<field name="model">sie.inscripcion</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form version="8.0" string="Inscripcion">
+					<header>
+					
+						<button name="inscrito" type="object" string="Inscribirse" states="pendiente_inscripcion"/>
+						<button name="aprobado" type="object" string="Aprobado" states="enviarfactura" />
+						<button name="suspenso" type="object" string="Suspenso" states="enviarfactura"  />
+						<button name="enviarfactura" type="object" string="Enviar Factura" states="inscrito"  />
+
+						
+						<field name="state" statusbar_visible="pendiente_inscripcion,inscrito" widget="statusbar"/>
+						
+						</header>
+					<sheet>
+						<group col="2">
+						<field name="alumnos"/>
+						<field name="edicion"/>
+                			
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+				<record model="ir.ui.view" id="view_sie_inscripcion">
+			<field name="name">Lista de inscripciones</field>
+			<field name="model">sie.inscripcion</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="sie.inscripcion">
+					<field name="alumnos"/>
+					<field name="edicion"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_inscripcion">
+			<field name="name">Inscripcion</field>
+			<field name="res_model">sie.inscripcion</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+			<!-- Declaración del filtro de búsqueda -->
+			<record id="curso_filter" model="ir.ui.view">
+				<field name="name">sie.curso.tree</field>
+				<field name="model">sie.curso</field>
+				<field name="type">search</field>
+				<field name="arch" type="xml">
+					<search string="Buscar curso">
+					   <group col='5' colspan='2'>
+						<field name="nombre"/>
+						<field name="precio"/>
+					   </group>
+					</search>
+				</field>
+			</record>
+			<record id="edicion_filter" model="ir.ui.view">
+				<field name="name">sie.edicion.tree</field>
+				<field name="model">sie.edicion</field>
+				<field name="type">search</field>
+				<field name="arch" type="xml">
+					<search string="Buscar edicion">
+					   <group col='5' colspan='2'>
+						<field name="curso"/>
+						<field name="edicion"/>
+						<field name="fecha_inicio"/>
+						<field name="fecha_fin"/>
+						<field name="centro"/>
+						<field name="estado"/>
+					   </group>
+					</search>
+				</field>
+			</record>
+			<record id="profesor_filter" model="ir.ui.view">
+				<field name="name">profesor.select</field>
+				<field name="model">sie.profesor</field>
+				<field name="type">search</field>
+				<field name="arch" type="xml">
+					<search string="Buscar profesor">
+					   <group col='5' colspan='2'>
+						<field name="nombre" select="1"/>
+						<field name="direccion" select="1"/>
+						<field name="localidad" select="1"/>
+						<field name="nif" select="1"/>
+						<field name="curso" select="1"/>
+						<field name="edicion" select="1"/>
+					   </group>
+					</search>
+				</field>
+			</record>
+
+			<record id="alumno_filter" model="ir.ui.view">
+				<field name="name">alumno.select</field>
+				<field name="model">sie.alumno</field>
+				<field name="type">search</field>
+				<field name="arch" type="xml">
+					<search string="Buscar alumno">
+					   <group col='5' colspan='2'>
+						<field name="nombre" select="1"/>
+						<field name="direccion" select="1"/>
+						<field name="localidad" select="1"/>
+						<field name="nif" select="1"/>
+						<field name="curso" select="1"/>
+						<field name="edicion" select="1"/>
+					   </group>
+					</search>
+				</field>
+			</record>
+			<record model="ir.ui.view" id="edicion_form">
+			<field name="name">sie.edicion.form</field>
+			<field name="model">sie.edicion</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Ediciones">
+					<group col="2">
+					<field name="curso"/>
+					<field name="edicion"/>
+					<field name="fecha_inicio"/>
+					<field name="fecha_fin"/>
+					<field name="centro"/>
+					<field name="estado"/>
+					</group>
+				</form>
+			</field>
+		</record>
+
+
+
+			<!-- Declaración del formulario -->
+			<record model="ir.ui.view" id="curso_form">
+				<field name="name">nombre</field>
+				<field name="model">sie.curso</field>
+				<field name="type">form</field>
+				<field name="arch" type="xml">
+					<form string="nombre">
+						<group col='5' colspan='2'>
+							<field name="nombre" />
+							<field name="precio" />
+							
+							
+						</group>
+					</form>
+				</field>
+			</record>
+
+					<record model="ir.ui.view" id="profesor_form">
+			<field name="name">Profesores</field>
+			<field name="model">sie.profesor</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Profesores">
+					<group col="2">
+					<field name="nombre"/>
+					<field name="direccion"/>
+					<field name="localidad"/>
+					<field name="nif"/>
+					<field name="curso"/>
+					<field name="edicion"/>
+					</group>
+				</form>
+			</field>
+		</record>
+				<record model="ir.ui.view" id="alumno_form">
+			<field name="name">Alumnos</field>
+			<field name="model">sie.alumno</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Alumnos">
+					<group col="2">
+					<field name="nombre"/>
+					<field name="direccion"/>
+					<field name="localidad"/>
+					<field name="nif"/>
+					<field name="curso"/>
+					<field name="edicion"/>
+					</group>
+				</form>
+			</field>
+		</record>
+			<!-- Declaración de la vista de árbol-->
+			<record model="ir.ui.view" id="cursos_tree">
+				<field name="name">Cursos</field>
+				<field name="model">sie.curso</field>
+				<field name="type">tree</field>
+				<field name="arch" type="xml">
+					<tree string="Cursos">
+						<field name="nombre" />
+						<field name="precio"/>
+
+						
+						
+					</tree>
+				</field>
+			</record>
+		<!-- FIN PARTE 1 -->
+		<record model="ir.ui.view" id="edicion_tree">
+			<field name="name">Ediciones</field>
+			<field name="model">sie.edicion</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="curso">
+					<field name="curso"/>
+					<field name="edicion"/>
+					<field name="fecha_inicio"/>
+					<field name="fecha_fin"/>
+					<field name="centro"/>
+					<field name="estado"/>
+				</tree>
+			</field>
+		</record>
+
+			<record model="ir.ui.view" id="profesor_tree">
+			<field name="name">Profesores</field>
+			<field name="model">sie.profesor</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="sie.profesor">
+					<field name="nombre"/>
+					<field name="direccion"/>
+					<field name="localidad"/>
+					<field name="nif"/>
+					<field name="curso"/>
+					<field name="edicion"/>
+				</tree>
+			</field>
+		</record>
+
+<record model="ir.ui.view" id="alumno_tree">
+			<field name="name">Alumnos</field>
+			<field name="model">sie.alumno</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="sie.alumno">
+					<field name="nombre"/>
+					<field name="direccion"/>
+					<field name="localidad"/>
+					<field name="nif"/>
+					<field name="curso"/>
+					<field name="edicion"/>
+				</tree>
+			</field>
+		</record>
+		<!-- PARTE 2: ACCIONES -->
+			<record model="ir.actions.act_window" id="action_curso">
+				<field name="name">Cursos</field>
+				<field name="res_model">sie.curso</field>
+				<field name="view_type">form</field>
+				<field name="view_mode">tree,form</field>
+			</record>
+			<record model="ir.actions.act_window" id="action_edicion">
+			<field name="name">Ediciones</field>
+			<field name="res_model">sie.edicion</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_profesor">
+			<field name="name">Profesores</field>
+			<field name="res_model">sie.profesor</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_alumno">
+			<field name="name">Alumnos</field>
+			<field name="res_model">sie.alumno</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<!-- FIN PARTE 2 -->
+		
+		<!-- PARTE 3: MENÚ -->
+		
+		<menuitem id="menu_agenda_main" name="Gestion Cursos"/>
+
+		<menuitem id="menu_agenda_gestion" parent="menu_agenda_main" name="Gestionar Cursos"/>
+
+		<menuitem id="menu_agenda_cursos" parent="menu_agenda_gestion" name="Cursos" action="action_curso"/>
+
+		<menuitem id="menu_agenda_edicion" parent="menu_agenda_gestion" name="Ediciones" action="action_edicion"/>
+
+		<menuitem id="menu_gestion_profesor" parent="menu_agenda_main" name="Gestionar Profesores"/>
+
+		<menuitem id="menu_agenda_profesor" parent="menu_gestion_profesor" name="Profesores" action="action_profesor"/>
+
+		<menuitem id="menu_gestion_alumno" parent="menu_agenda_main" name="Gestionar Alumnos"/>
+
+		<menuitem id="menu_agenda_alumno" parent="menu_gestion_alumno" name="Alumnos" action="action_alumno"/>
+
+		<menuitem id="menu_gestion_inscripcion" parent="menu_agenda_main" name="Gestionar Inscripciones"/>
+
+		<menuitem id="menu_agenda_inscripcion" parent="menu_gestion_inscripcion" name="Inscripciones" action="action_inscripcion"/>
+
+	</data>
+</openerp>
